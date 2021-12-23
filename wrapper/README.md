@@ -72,5 +72,14 @@ Usage: ./test.o \
 :warning: **WARNING** :warning: You must run the cmd with sudo (OR as root), \
 because register can't be accessed otherwise.
 
-If you want to use the relativ path, it must be run like this :
+If you want to use the relativ path (e.g. : to run through crontab), \
+it must be run like this :
 - `sudo /home/<user>/path/to/test1.o -g 21 -s grb -x 16 -y 16 -c`
+
+#### Tips:
+You can put those cmd into files and make them executable with chmod.
+Like :
+- $> vim compile.sh
+	- `gcc -Wall main.c \<yourOwnCFiles\> -lws2811 -lm -o test.o`
+- $> chmod +x compile.sh
+- $> ./compile.sh
