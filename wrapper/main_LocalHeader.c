@@ -13,17 +13,17 @@
 //#include <getopt.h>
 #include <stdint.h>
 
-#include "/usr/local/include/ws2811/clk.h"
-#include "/usr/local/include/ws2811/gpio.h"
-#include "/usr/local/include/ws2811/dma.h"
-#include "/usr/local/include/ws2811/pwm.h"
+#include "clk.h"
+#include "gpio.h"
+#include "dma.h"
+#include "pwm.h"
 #include "version.h"
 
-#include "/usr/local/include/ws2811/ws2811.h"
+#include "ws2811.h"
 
 #include "argsParser.h"
-#include "ledCtrl.h"
-#include "mxCtrl.h"
+#include "ledsCtrl/ledsCtrl.h"
+#include "mxCtrl/mxCtrl.h"
 
 // defaults for cmdline options
 #define TARGET_FREQ             WS2811_TARGET_FREQ
