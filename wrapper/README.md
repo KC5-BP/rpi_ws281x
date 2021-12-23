@@ -69,7 +69,7 @@ Usage: ./test.o \
 -c (--clear)   - clear matrix on exit. \
 -v (--version) - version information \
 \
-/!\\ WARNING /!\\ You must run the cmd as root (OR sudo), because \
+:warning: WARNING :warning: You must run the cmd as root (OR sudo), because \
 register can't be accessed otherwise.\
 \
 If you want to use the relativ path, it must be run like this :
