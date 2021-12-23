@@ -59,7 +59,7 @@ for platform, tool, flags in platforms:
     env = Environment(
         options = opts,
         tools = tool,
-        toolpath = ['.'],
+        toolpath = ['../.'],
         ENV = {'PATH' : os.environ['PATH']},
         LIBS = [],
     )
