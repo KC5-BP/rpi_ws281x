@@ -68,6 +68,7 @@ Usage: ./test.o \
 -i (--invert)  - invert pin output (pulse LOW) \
 -c (--clear)   - clear matrix on exit. \
 -v (--version) - version information \
+\
 :warning: **WARNING** :warning: You must run the cmd with sudo (OR as root), \
 because register can't be accessed otherwise.
 
