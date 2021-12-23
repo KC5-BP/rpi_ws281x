@@ -47,12 +47,13 @@ With scons, you build the test file
 ### Usage:
 #### Compile:
 To compile the project, use :
-- `gcc -Wall main.c \<yourOwnCFiles\> -lws2811 -lm -o test.o`
+- `gcc -Wall main.c \<yourOwnCFiles\> -lws2811 -lm -o test.o` \
+
 Such as : 
 - `gcc -Wall main.c argsParser.c -lws2811 -lm -o test.o`
 
 #### Run:
-Running the project is .. pretty simple x)
+Running the project is .. pretty simple x) \
 Just ./test.o with (or not) your wanted option :
 - `sudo ./test1.o -g 21 -s grb -x 16 -y 16 -c`
 \
@@ -69,8 +70,8 @@ Usage: ./test.o \
 -c (--clear)   - clear matrix on exit. \
 -v (--version) - version information \
 \
-:warning: WARNING :warning: You must run the cmd as root (OR sudo), because \
-register can't be accessed otherwise.\
+:warning: **WARNING** :warning: You must run the cmd with sudo (OR as root), \
+because register can't be accessed otherwise. \
 \
 If you want to use the relativ path, it must be run like this :
-- `sudo /home/\<user\>/path/to/test1.o -g 21 -s grb -x 16 -y 16 -c`
+	- `sudo /home/<user>/path/to/test1.o -g 21 -s grb -x 16 -y 16 -c`
