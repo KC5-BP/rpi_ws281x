@@ -28,6 +28,9 @@ set(LIB_PUBLIC_HEADERS
     ../gpio.h
     ../mailbox.h
     ../pcm.h
+
+    ledsCtrl/ledsCtrl.h
+#    mxCtrl/mxCtrl.h
 )
 
 set(LIB_SOURCES
@@ -37,6 +40,9 @@ set(LIB_SOURCES
     ../pcm.c
     ../dma.c
     ../rpihw.c
+
+    ledsCtrl/ledsCtrl.h
+#    mxCtrl/mxCtrl.h
 )
 
 set(TEST_SOURCES
