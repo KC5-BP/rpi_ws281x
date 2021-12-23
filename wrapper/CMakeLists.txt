@@ -20,32 +20,32 @@ set(LIB_TARGET ws2811)
 set(TEST_TARGET test)
 
 set(LIB_PUBLIC_HEADERS
-    ws2811.h
-    rpihw.h
-    pwm.h
-    clk.h
-    dma.h
-    gpio.h
-    mailbox.h
-    pcm.h
+    ../ws2811.h
+    ../rpihw.h
+    ../pwm.h
+    ../clk.h
+    ../dma.h
+    ../gpio.h
+    ../mailbox.h
+    ../pcm.h
 )
 
 set(LIB_SOURCES
-    mailbox.c
-    ws2811.c
-    pwm.c
-    pcm.c
-    dma.c
-    rpihw.c
+    ../mailbox.c
+    ../ws2811.c
+    ../pwm.c
+    ../pcm.c
+    ../dma.c
+    ../rpihw.c
 )
 
 set(TEST_SOURCES
-    main.c
+    ../main.c
 )
 
 include(GNUInstallDirs)
 
-configure_file(version.h.in version.h)
+configure_file(../version.h.in version.h)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/pkg-config.pc.in"
