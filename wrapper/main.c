@@ -22,7 +22,7 @@
 #include "/usr/local/include/ws2811/ws2811.h"
 
 #include "argsParser.h"
-#include "ledCtrl.h"
+#include "/usr/local/include/ws2811/ledsCtrl.h"
 #include "mxCtrl.h"
 
 // defaults for cmdline options
