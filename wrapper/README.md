@@ -39,7 +39,7 @@ to modify them and fit the lib's path or add my files to the lib.
   ```
   See also for available options in `CMakeLists.txt`. \
 \
-(_Note :_ The following cmds are run from created "build" folder)
+(_Note :_ The following cmds are run from inside the "build" folder)
 - Type `cmake --build .` to build \
 (Skip these step if you only want to install built binaries)
 - To install built binaries and headers into your system type:
