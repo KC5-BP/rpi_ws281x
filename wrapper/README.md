@@ -73,7 +73,7 @@ Just ./test.o with (or not) your wanted option :
 \
 And with : -h \
 Usage: ./test.o \
-&nbsp-h (--help)    - this information \
+&nbsp;-h (--help)    - this information \
 -s (--strip)   - strip type - rgb, grb, gbr, rgbw \
 -x (--width)   - matrix width (default 8) \
 -y (--height)  - matrix height (default 8) \
