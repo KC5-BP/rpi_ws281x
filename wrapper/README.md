@@ -73,10 +73,10 @@ Just ./test.o with (or not) your wanted option :
 \
 And with : -h \
 Usage: ./test.o \
-&nbsp;-h (--help)    - this information \
--s (--strip)   - strip type - rgb, grb, gbr, rgbw \
--x (--width)   - matrix width (default 8) \
--y (--height)  - matrix height (default 8) \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-h (--help)    - this information \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-s (--strip)   - strip type - rgb, grb, gbr, rgbw \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-x (--width)   - matrix width (default 8) \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-y (--height)  - matrix height (default 8) \
 -d (--dma)     - dma channel to use (default 10) \
 -g (--gpio)    - GPIO to use \
 If omitted, default is 18 (PWM0) \
