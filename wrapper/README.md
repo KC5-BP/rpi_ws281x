@@ -67,11 +67,11 @@ Like :
 - `gcc -Wall main.c argsParser.c -lws2811 -lm -o test.o`
 
 #### Run:
-Running the project is .. pretty simple x) \
+Run project using the output file. \
 Just ./test.o with (or not) your wanted option :
 - `sudo ./test1.o -g 21 -s grb -x 16 -y 16 -c`
 \
-And With : -h \
+And with : -h \
 Usage: ./test.o \
 -h (--help)    - this information \
 -s (--strip)   - strip type - rgb, grb, gbr, rgbw \
