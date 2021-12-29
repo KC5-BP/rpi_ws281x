@@ -77,12 +77,12 @@ Usage: ./test.o \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-s (--strip)   - strip type - rgb, grb, gbr, rgbw \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-x (--width)   - matrix width (default 8) \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-y (--height)  - matrix height (default 8) \
--d (--dma)     - dma channel to use (default 10) \
--g (--gpio)    - GPIO to use \
-If omitted, default is 18 (PWM0) \
--i (--invert)  - invert pin output (pulse LOW) \
--c (--clear)   - clear matrix on exit. \
--v (--version) - version information \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-d (--dma)     - dma channel to use (default 10) \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-g (--gpio)    - GPIO to use \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If omitted, default is 18 (PWM0) \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-i (--invert)  - invert pin output (pulse LOW) \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-c (--clear)   - clear matrix on exit. \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-v (--version) - version information \
 \
 :warning: **WARNING** :warning: You must run the cmd with sudo (OR as root), \
 because register can't be accessed otherwise.
