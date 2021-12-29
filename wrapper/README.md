@@ -98,4 +98,4 @@ Like :
 - $> chmod +x compile.sh
 - $> ./compile.sh
 
-You can do the same things for the run process :+1: .
+You can do the same things for the running process :+1: .
