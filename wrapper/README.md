@@ -97,3 +97,5 @@ Like :
 	- `gcc -Wall main.c <yourOwnCFiles.c> -lws2811 -lm -o test.o`
 - $> chmod +x compile.sh
 - $> ./compile.sh
+
+You can do the same things for the execution process :+1: .
