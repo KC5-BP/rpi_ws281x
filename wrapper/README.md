@@ -5,7 +5,7 @@ For the default README, check [here](../README.md).
 
 ### Background:
 I wanted a library to control addressable LEDs (while developing, \
-specificly WS2812B) and I discovered the rpi_ws281x repo. of user _jgarff_.
+specificly WS2812B) and I discovered the [rpi_ws281x repo.](https://github.com/jgarff/rpi_ws281x) of user [_jgarff_](https://github.com/jgarff).
 
 ### In-depths
 I created this sub-folder to rename some stuffs (like functions by \
