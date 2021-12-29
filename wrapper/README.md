@@ -73,16 +73,16 @@ Just ./test.o with (or not) your wanted option :
 \
 And with : -h \
 Usage: ./test.o \
-<pre>-h (--help)    - this information \
-<pre>-s (--strip)   - strip type - rgb, grb, gbr, rgbw \
-<pre>-x (--width)   - matrix width (default 8) \
-<pre>-y (--height)  - matrix height (default 8) \
-<pre>-d (--dma)     - dma channel to use (default 10) \
-<pre>-g (--gpio)    - GPIO to use \
-<pre><pre>If omitted, default is 18 (PWM0) \
-<pre>-i (--invert)  - invert pin output (pulse LOW) \
-<pre>-c (--clear)   - clear matrix on exit. \
-<pre>-v (--version) - version information \
+&nbsp-h (--help)    - this information \
+-s (--strip)   - strip type - rgb, grb, gbr, rgbw \
+-x (--width)   - matrix width (default 8) \
+-y (--height)  - matrix height (default 8) \
+-d (--dma)     - dma channel to use (default 10) \
+-g (--gpio)    - GPIO to use \
+If omitted, default is 18 (PWM0) \
+-i (--invert)  - invert pin output (pulse LOW) \
+-c (--clear)   - clear matrix on exit. \
+-v (--version) - version information \
 \
 :warning: **WARNING** :warning: You must run the cmd with sudo (OR as root), \
 because register can't be accessed otherwise.
