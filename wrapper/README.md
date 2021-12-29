@@ -37,7 +37,7 @@ to modify them and fit the lib's path or add my files to the lib.
   cd build
   cmake -D BUILD_SHARED=OFF -D BUILD_TEST=ON /relative/path/to/rpi_ws281x/wrapper/.
   ```
-  See also for available options in `CMakeLists.txt`.
+  See also for available options in `CMakeLists.txt`. \
   (Following cmds are run from created \<\<build\>\> folder)
 - Type `cmake --build .` to build \
 (Skip these step if you only want to install built binaries)
