@@ -42,33 +42,10 @@ int height = HEIGHT;
 int led_count = LED_COUNT;
 
 int clear_on_exit = 0;
-
-ws2811_t ledstring =
-{
-    .freq = TARGET_FREQ,
-    .dmanum = DMA,
-    .channel =
-    {
-        [0] =
-        {
-            .gpionum = GPIO_PIN,
-            .count = LED_COUNT,
-            .invert = 0,
-            .brightness = 255,
-            .strip_type = STRIP_TYPE,
-        },
-        [1] =
-        {
-            .gpionum = 0,
-            .count = 0,
-            .invert = 0,
-            .brightness = 0,
-        },
-    },
-};
-
 static uint8_t running = 1;
 
+// EXTERN CMD MANAGER --------------------------------------------->
+// CTRL C Handler
 static void ctrl_c_handler(int signum)
 {
 	(void)(signum);
@@ -86,13 +63,40 @@ static void setup_handlers(void)
     sigaction(SIGTERM, &sa, NULL);
 }
 
+// FN PROTOTYPES Based on the default exemple --------------------->
+void matrix_render(ws2811_t* display, ws2811_led_t* colors);
+void matrix_raise(ws2811_led_t* colors);
+void matrix_clear(ws2811_led_t* colors);
+void matrix_bootom(ws2811_t* display, ws2811_led_t* colors);
+
 int main(int argc, char *argv[])
 {
+    ws2811_t ledstring = {
+        .freq = TARGET_FREQ,
+        .dmanum = DMA,
+        .channel = {
+            [0] = {
+                .gpionum = GPIO_PIN,
+                .count = LED_COUNT,
+                .invert = 0,
+                .brightness = 255,
+                .strip_type = STRIP_TYPE,
+            },
+            [1] = {
+                .gpionum = 0,
+                .count = 0,
+                .invert = 0,
+                .brightness = 0,
+            },
+        },
+    };
     displayStatus_t ret;
 
     sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 
     parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
+
+    matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
 
     setup_handlers();
 
@@ -101,22 +105,10 @@ int main(int argc, char *argv[])
         return ret;
     }
 
-    int8_t allCharDisplayed = 0;
-    //signed char x = 20; // <- Collector : Rpi0W treat the default char as
-    //UNSIGNED CHAR
-    int8_t x = 20;
-
     do {
-	display_Clear(&ledstring);
-	
-	matrix_SetTextPosition(x--, 5);
-
-	if (x <= (-100)) {
-		allCharDisplayed = 1;
-	}
-	//ledColor_t color = 0x00200020; // PURPLE
-	ledColor_t color = 0x00002020; // CYAN
-	matrix_Print(&ledstring, &color, "WELCOME HOME!");
+        matrix_raise(&matrix);
+        matrix_bottom(&ledstring, &matrix);
+        matrix_render(&ledstring, &matrix);
 
         if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS)
         {
@@ -129,11 +121,90 @@ int main(int argc, char *argv[])
     } while ( running && !allCharDisplayed );
 
     if (clear_on_exit) {
-	display_Off(&ledstring);
+        matrix_clear(&matrix);
+        matrix_render(&ledstring, &matrix);
+        display_Off(&ledstring);
     }
 
     display_Terminate(&ledstring);
 
     printf ("\n");
     return ret;
+}
+
+
+// FN DECLARATIONS Based on the default exemple ------------------->
+void matrix_render(ws2811_t* display, ws2811_led_t* colors)
+{
+    int pos = 0;
+    for (int x = 0; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {   
+            pos = y * width + x;
+            pixel_SetColor(display, &color[pos], pos);
+            pixel_SetColor(display, color + pos, pos);
+            //display->channel[0].leds[y * width + x] = colors[y * width + x];
+        }
+    }
+}
+void matrix_raise(ws2811_led_t* colors)
+{
+    for (int y = 0; y < (height - 1); y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            // This is for the 8x8 Pimoroni Unicorn-HAT where the LEDS in subsequent
+            // rows are arranged in opposite directions
+            colors[y * width + x] = colors[(y + 1)*width + width - x - 1];
+        }
+    }
+}
+void matrix_clear(ws2811_led_t* colors)
+{
+    for (int y = 0; y < (height ); y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            colors[y * width + x] = 0;
+        }
+    }
+}
+void matrix_bootom(ws2811_t* display, ws2811_led_t* colors) {
+    int dotspos[] = {0,1,2,3,4,5,6,7};
+    ws2811_led_t dotcolors[] =
+    {
+        0x00200000,  // red
+        0x00201000,  // orange
+        0x00202000,  // yellow
+        0x00002000,  // green
+        0x00002020,  // lightblue
+        0x00000020,  // blue
+        0x00100010,  // purple
+        0x00200010,  // pink
+    };
+
+    ws2811_led_t dotcolors_rgbw[] =
+    {
+        0x00200000,  // red
+        0x10200000,  // red + W
+        0x00002000,  // green
+        0x10002000,  // green + W
+        0x00000020,  // blue
+        0x10000020,  // blue + W
+        0x00101010,  // white
+        0x10101010,  // white + W
+    };
+
+    for (int i = 0; i < (int)(ARRAY_SIZE(dotspos)); i++)
+    {
+        //dotspos[i]++;
+        if (++dotspos[i] > (width - 1))
+            dotspos[i] = 0;
+
+        if (display->channel[0].strip_type == SK6812_STRIP_RGBW)
+            colors[dotspos[i] + (height - 1) * width] = dotcolors_rgbw[i];
+        else
+            colors[dotspos[i] + (height - 1) * width] = dotcolors[i];
+    }
 }
