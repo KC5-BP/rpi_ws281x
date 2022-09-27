@@ -41,8 +41,8 @@ set(LIB_SOURCES
     ../dma.c
     ../rpihw.c
 
-    ledsCtrl/ledsCtrl.h
-#    mxCtrl/mxCtrl.h
+    ledsCtrl/ledsCtrl.c
+#    mxCtrl/mxCtrl.c
 )
 
 set(TEST_SOURCES
