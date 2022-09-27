@@ -1,7 +1,7 @@
 
 #include "/usr/local/include/ws2811/ws2811.h"
 
-#include "ledCtrl.h"
+#include "ledsCtrl.h"
 
 const ledColor_t BLACK = 0;
 
