@@ -1,11 +1,12 @@
 // .. created header for ws2812b matrix usage.
 #include "mxCtrl.h"
 // .. created header for ws2812b led usage.
-#include "ledCtrl.h"  // For the << pixel >> struct.
+//#include "ledCtrl.h"  // For the << pixel >> struct.
+#include "/usr/local/include/ws2811/ledsCtrl.h"  // For the << pixel >> struct.
 // .. character's definitions.
-#include "characters/kc5_bp_matrix_alphanum.h"
+#include "fonts/kc5_bp_matrix_alphanum.h"
 // .. character's BIG definitions (Letter's height : X14).
-//#include "characters/kc5_bp_matrix_alpha_big.h"
+//#include "fonts/kc5_bp_matrix_alpha_big.h"
 
 //-- GLOBAL VARIABLES INIT : ----------------------------->
 //offsetText txtOffset = {0, 0};
