@@ -1,7 +1,7 @@
 
 //#include <stdint.h>
 #include <stdio.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 //#include <string.h>
 #include <unistd.h>
 //#include <sys/types.h>
@@ -23,7 +23,9 @@
 
 #include "argsParser.h"
 #include "/usr/local/include/ws2811/ledsCtrl.h"
-#include "mxCtrl.h"
+//#include <ledsCtrl.h>
+//#include "mxCtrl.h"
+#include "mxCtrl/mxCtrl.h"
 
 // defaults for cmdline options
 #define TARGET_FREQ             WS2811_TARGET_FREQ
@@ -32,6 +34,7 @@
 //#define STRIP_TYPE            WS2811_STRIP_RGB		// WS2812/SK6812RGB integrated chip+leds
 #define STRIP_TYPE              WS2811_STRIP_GBR		// WS2812/SK6812RGB integrated chip+leds
 //#define STRIP_TYPE            SK6812_STRIP_RGBW		// SK6812RGBW (NOT SK6812RGB)
+#define ARRAY_SIZE(ARRAY) ( sizeof(ARRAY) / sizeof(ARRAY[0]) )
 
 #define WIDTH                   8
 #define HEIGHT                  8
@@ -67,7 +70,7 @@ static void setup_handlers(void)
 void matrix_render(ws2811_t* display, ws2811_led_t* colors);
 void matrix_raise(ws2811_led_t* colors);
 void matrix_clear(ws2811_led_t* colors);
-void matrix_bootom(ws2811_t* display, ws2811_led_t* colors);
+void matrix_bottom(ws2811_t* display, ws2811_led_t* colors);
 
 int main(int argc, char *argv[])
 {
@@ -96,7 +99,7 @@ int main(int argc, char *argv[])
 
     parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
 
-    matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
+    ws2811_led_t* matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
 
     setup_handlers();
 
@@ -106,9 +109,9 @@ int main(int argc, char *argv[])
     }
 
     do {
-        matrix_raise(&matrix);
-        matrix_bottom(&ledstring, &matrix);
-        matrix_render(&ledstring, &matrix);
+        matrix_raise(matrix);
+        matrix_bottom(&ledstring, matrix);
+        matrix_render(&ledstring, matrix);
 
         if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS)
         {
@@ -118,11 +121,11 @@ int main(int argc, char *argv[])
 
         // X frames / sec
         usleep(1000000 / 9);
-    } while ( running && !allCharDisplayed );
+    } while ( running );
 
     if (clear_on_exit) {
-        matrix_clear(&matrix);
-        matrix_render(&ledstring, &matrix);
+        matrix_clear(matrix);
+        matrix_render(&ledstring, matrix);
         display_Off(&ledstring);
     }
 
@@ -142,8 +145,8 @@ void matrix_render(ws2811_t* display, ws2811_led_t* colors)
         for (int y = 0; y < height; y++)
         {   
             pos = y * width + x;
-            pixel_SetColor(display, &color[pos], pos);
-            pixel_SetColor(display, color + pos, pos);
+            //pixel_SetColor(display, &colors[pos], pos);
+              pixel_SetColor(display, colors + pos, pos);
             //display->channel[0].leds[y * width + x] = colors[y * width + x];
         }
     }
@@ -170,7 +173,7 @@ void matrix_clear(ws2811_led_t* colors)
         }
     }
 }
-void matrix_bootom(ws2811_t* display, ws2811_led_t* colors) {
+void matrix_bottom(ws2811_t* display, ws2811_led_t* colors) {
     int dotspos[] = {0,1,2,3,4,5,6,7};
     ws2811_led_t dotcolors[] =
     {
