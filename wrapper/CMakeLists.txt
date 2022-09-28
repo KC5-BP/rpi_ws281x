@@ -29,8 +29,7 @@ set(LIB_PUBLIC_HEADERS
     ../mailbox.h
     ../pcm.h
 
-    ledsCtrl/ledsCtrl.h
-#    mxCtrl/mxCtrl.h
+    ../ledsCtrl.h
 )
 
 set(LIB_SOURCES
@@ -41,8 +40,7 @@ set(LIB_SOURCES
     ../dma.c
     ../rpihw.c
 
-    ledsCtrl/ledsCtrl.c
-#    mxCtrl/mxCtrl.c
+    ../ledsCtrl.c
 )
 
 set(TEST_SOURCES
