@@ -13,7 +13,7 @@
 #include <getopt.h>
 
 #include "version.h"
-#include "/usr/local/include/ws2811/ledsCtrl.h"
+#include "/usr/local/include/ws2811/ledsWrapper.h"
 #include "argsParser.h"
 
 void parseargs(int argc, char **argv, display_t* ws2811, int* height, int* width, int* led_count, int* clear_on_exit) {

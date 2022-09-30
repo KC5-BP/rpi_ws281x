@@ -1,5 +1,5 @@
 
-#include "/usr/local/include/ws2811/ledsCtrl.h"
+#include "/usr/local/include/ws2811/ledsWrapper.h"
 
 #ifndef __ARGSPARSER_H__
 #define __ARGSPARSER_H__
