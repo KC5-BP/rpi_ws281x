@@ -19,6 +19,22 @@ set(CMAKE_C_STANDARD 11)
 set(LIB_TARGET ws2811)
 set(TEST_TARGET test)
 
+set(CUSTOM_HEADERS
+	ledsCtrl/ledsCtrl.h
+	#mxCtrl/mxCtrl.h
+)
+
+set(CUSTOM_SOURCES
+	ledsCtrl/ledsCtrl.c
+	#mxCtrl/mxCtrl.c
+)
+
+file(COPY ${CUSTOM_HEADERS}
+	DESTINATION "../.")
+
+file(COPY ${CUSTOM_SOURCES}
+	DESTINATION "../.")
+
 set(LIB_PUBLIC_HEADERS
     ../ws2811.h
     ../rpihw.h
