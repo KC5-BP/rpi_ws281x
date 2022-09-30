@@ -29,18 +29,18 @@ set(CUSTOM_SOURCES
 	#mxCtrl/mxCtrl.c
 )
 
+file(COPY ${CUSTOM_HEADERS}
+	DESTINATION "../.")
+
+file(COPY ${CUSTOM_SOURCES}
+	DESTINATION "../.")
+
 set(COPIED_FILES
 	../ledsCtrl.c
 	../ledsCtrl.h
 	#../mxCtrl.c
 	#../mxCtrl.h
 )
-
-file(COPY ${CUSTOM_HEADERS}
-	DESTINATION "../.")
-
-file(COPY ${CUSTOM_SOURCES}
-	DESTINATION "../.")
 
 set(LIB_PUBLIC_HEADERS
     ../ws2811.h
