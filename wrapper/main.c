@@ -94,9 +94,6 @@ int main(int argc, char *argv[])
         },
     };
     displayStatus_t ret;
-    ledPos_t areaStart[] = {  0,  70};
-    ledPos_t areaEnd[]   = { 70, 140};
-    ledColor_t areaColor[] = {0x00081000, 0x00080010};
 
     sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 
@@ -110,6 +107,13 @@ int main(int argc, char *argv[])
         fprintf(stderr, "ws2811_init failed: %s\n", displayStatus_t_ToStr(ret));
         return ret;
     }
+
+    //ledPos_t areaStart[] = {  0,  70};
+    //ledPos_t areaEnd[]   = { 70, 140};
+    ledPos_t areaStart[] = {  0,  ledstring.channel[0].count / 2 + 1};
+    ledPos_t areaEnd[]   = { ledstring.channel[0].count / 2 + 1, ledstring.channel[0].count};
+    //ledColor_t areaColor[] = {0x00081000, 0x00080010};
+    ledColor_t areaColor[] = {0x00081000, 0x00080010};
 
     for (ledPos_t i = 0; i < ARRAY_SIZE(areaStart); ++i)
 	display_Chain(&ledstring, areaColor+i, areaStart[i], areaEnd[i]);
