@@ -29,11 +29,12 @@ set(CUSTOM_SOURCES
 	#mxCtrl/mxCtrl.c
 )
 
+message("*** Copying custom files to parent folder  ***\n")
 file(COPY ${CUSTOM_HEADERS}
-	DESTINATION "../.")
+	DESTINATION "../")
 
 file(COPY ${CUSTOM_SOURCES}
-	DESTINATION "../.")
+	DESTINATION "../")
 
 set(COPIED_FILES
 	../ledsCtrl.c
@@ -114,5 +115,6 @@ if(BUILD_TEST)
     target_link_libraries(${TEST_TARGET} ${LIB_TARGET})
 endif()
 
-file(REMOVE ${COPIED_FILES})
+#message("*** Removing custom files to parent folder ***\n")
+#file(REMOVE ${COPIED_FILES})
 
