@@ -20,12 +20,12 @@ set(LIB_TARGET ws2811)
 set(TEST_TARGET test)
 
 set(CUSTOM_HEADERS
-	ledsCtrl/ledsCtrl.h
+	ledsWrapper/ledsWrapper.h
 	#mxCtrl/mxCtrl.h
 )
 
 set(CUSTOM_SOURCES
-	ledsCtrl/ledsCtrl.c
+	ledsWrapper/ledsWrapper.c
 	#mxCtrl/mxCtrl.c
 )
 
@@ -37,8 +37,8 @@ file(COPY ${CUSTOM_SOURCES}
 	DESTINATION "../")
 
 set(COPIED_FILES
-	../ledsCtrl.c
-	../ledsCtrl.h
+	../ledsWrapper.c
+	../ledsWrapper.h
 	#../mxCtrl.c
 	#../mxCtrl.h
 )
@@ -53,7 +53,7 @@ set(LIB_PUBLIC_HEADERS
     ../mailbox.h
     ../pcm.h
 
-    ../ledsCtrl.h
+    ../ledsWrapper.h
 )
 
 set(LIB_SOURCES
@@ -64,7 +64,7 @@ set(LIB_SOURCES
     ../dma.c
     ../rpihw.c
 
-    ../ledsCtrl.c
+    ../ledsWrapper.c
 )
 
 set(TEST_SOURCES
