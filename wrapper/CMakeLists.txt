@@ -29,6 +29,13 @@ set(CUSTOM_SOURCES
 	#mxCtrl/mxCtrl.c
 )
 
+set(COPIED_FILES
+	../ledsCtrl.c
+	../ledsCtrl.h
+	#../mxCtrl.c
+	#../mxCtrl.h
+)
+
 file(COPY ${CUSTOM_HEADERS}
 	DESTINATION "../.")
 
@@ -106,3 +113,6 @@ if(BUILD_TEST)
     add_executable(${TEST_TARGET} ${TEST_SOURCES})
     target_link_libraries(${TEST_TARGET} ${LIB_TARGET})
 endif()
+
+file(REMOVE ${COPIED_FILES})
+
