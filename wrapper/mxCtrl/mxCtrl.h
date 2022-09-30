@@ -1,7 +1,7 @@
 // Linker to : ..
 // .. created header for ws2812b led usage.
 //#include "ledCtrl.h"  // For the << pixel >> struct.
-#include "/usr/local/include/ws2811/ledsCtrl.h"  // For the << pixel >> struct.
+#include "/usr/local/include/ws2811/ledsWrapper.h"  // For the << pixel >> struct.
 
 //===================================================
 //================================\HEADER'S_Definitions/================================>

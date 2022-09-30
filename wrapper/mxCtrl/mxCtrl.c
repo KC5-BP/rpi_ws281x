@@ -2,7 +2,7 @@
 #include "mxCtrl.h"
 // .. created header for ws2812b led usage.
 //#include "ledCtrl.h"  // For the << pixel >> struct.
-#include "/usr/local/include/ws2811/ledsCtrl.h"  // For the << pixel >> struct.
+#include "/usr/local/include/ws2811/ledsWrapper.h"  // For the << pixel >> struct.
 // .. character's definitions.
 #include "fonts/kc5_bp_matrix_alphanum.h"
 // .. character's BIG definitions (Letter's height : X14).
