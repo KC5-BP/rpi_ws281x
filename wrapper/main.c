@@ -22,8 +22,8 @@
 #include "/usr/local/include/ws2811/ws2811.h"
 
 #include "argsParser.h"
-#include "/usr/local/include/ws2811/ledsCtrl.h"
-//#include <ledsCtrl.h>
+#include "/usr/local/include/ws2811/ledsWrapper.h"
+//#include <ledsWrapper.h>
 //#include "mxCtrl.h"
 #include "mxCtrl/mxCtrl.h"
 
