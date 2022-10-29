@@ -62,17 +62,17 @@ With scons, you build the test file
 
 #### Compile:
 To compile the project, use :
-- `gcc -Wall main.c <yourOwnCFiles.c> -lws2811 -lm -o test.o` \
+- `gcc -Wall main.c <yourAdditionalCFiles.c> -lws2811 -lm -o test.elf` \
 Like : 
-- `gcc -Wall main.c argsParser.c -lws2811 -lm -o test.o`
+- `gcc -Wall main.c argsParser.c -lws2811 -lm -o test.elf`
 
 #### Run:
 Run project using the output file. \
-Just ./test.o with (or not) your wanted option :
-- `sudo ./test1.o -g 21 -s grb -x 16 -y 16 -c`
+Just ./test.elf with (or not) your wanted option :
+- `sudo ./test.elf -g 21 -s grb -x 16 -y 16 -c`
 \
 And with : -h \
-Usage: ./test.o \
+Usage: ./test.elf \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-h (--help)    - this information \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-s (--strip)   - strip type - rgb, grb, gbr, rgbw \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-x (--width)   - matrix width (default 8) \
@@ -89,13 +89,13 @@ because register can't be accessed otherwise.
 
 If you want to use the relative path (e.g. : to run through crontab), \
 it must be run like this :
-- `sudo /relative/path/to/test1.o -g 21 -s grb -x 16 -y 16 -c`
+- `sudo /relative/path/to/test.elf -g 21 -s grb -x 16 -y 16 -c`
 
 #### Tips:
 You can put those cmd into files and make them executable with chmod.
 Like :
 - $> vim compile.sh
-	- `gcc -Wall main.c <yourOwnCFiles.c> -lws2811 -lm -o test.o`
+	- `gcc -Wall main.c <yourAdditionalCFiles.c> -lws2811 -lm -o test.elf`
 - $> chmod +x compile.sh
 - $> ./compile.sh
 
