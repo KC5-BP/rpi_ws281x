@@ -66,74 +66,11 @@ static void setup_handlers(void)
     sigaction(SIGTERM, &sa, NULL);
 }
 
-// FN PROTOTYPES Based on the default exemple --------------------->
-//void matrix_render(ws2811_t* display);
-//void matrix_raise(ws2811_led_t* display);
-//void matrix_clear(ws2811_led_t* display);
-//void matrix_bottom(ws2811_led_t* display);
-void matrix_raise(display_t* display);
-void matrix_clear(display_t* display);
-void matrix_bottom(display_t* display);
-
-int main(int argc, char *argv[])
-{
-	ws2811_t ledstring = {
-		.freq = TARGET_FREQ,
-		.dmanum = DMA,
-		.channel = {
-			[0] = {
-				.gpionum = GPIO_PIN,
-				.count = LED_COUNT,
-				.invert = 0,
-				.brightness = 255,
-				.strip_type = STRIP_TYPE,
-			},
-			[1] = {
-				.gpionum = 0,
-				.count = 0,
-				.invert = 0,
-				.brightness = 0,
-			},
-		},
-	};
-	displayStatus_t ret;
-
-	sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
-
-	parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
-
-	ws2811_led_t* matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
-
-	setup_handlers();
-
-	if ((ret = display_Init(&ledstring)) != WS2811_SUCCESS) {
-		fprintf(stderr, "ws2811_init failed: %s\n", displayStatus_t_ToStr(ret));
-		return ret;
-	}
-
-	while ( running ) {
-		matrix_raise(&ledstring);
-		matrix_bottom(&ledstring);
-		//matrix_render(&ledstring);
-
-		if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS) {
-			fprintf(stderr, "ws2811_render failed: %s\n", displayStatus_t_ToStr(ret));
-			break;
-		}
-		
-		/* / X IPS */
-		usleep(1000000 / 20);
-	}
-	
-	if (clear_on_exit)
-		display_Off(&ledstring);
-
-	display_Terminate(&ledstring);
-	
-	printf ("\n");
-	return ret;
-}
-
+// Fns Based on the default exemple --------------------->
+/**
+ * Recover color on a line and shift it to the below one
+ * Minus one on height to define first line to have one reference line
+ */
 void matrix_raise(display_t* display)
 {
 	for (int y = 0; y < (height - 1); y++) {
@@ -142,21 +79,14 @@ void matrix_raise(display_t* display)
 			// rows are arranged in opposite directions
 			ws2811_led_t tmp = pixel_GetColor(display, (y + 1) * width + width - (x + 1));
 			pixel_SetColor(display, &tmp, y * width + x);
-			//display[y * width + x] = display[(y + 1) * width + width - (x + 1)];
-
 		}
 	}
 }
 
-//void matrix_clear(ws2811_led_t* display)
-void matrix_clear(display_t* display)
-{
-	for (int y = 0; y < height; y++)
-		for (int x = 0; x < width; x++)
-			display->channel[0].leds[y * width + x] = 0;
-}
-
-//void matrix_bottom(ws2811_led_t* display) {
+/**
+ * Create the reference line that will be shifted 
+ * on the rest of a matrix with matrix_raise (see upper fn)
+ */
 void matrix_bottom(display_t* display) {
 	static int dotspos[] = {0, 1, 2, 3, 4, 5, 6, 7};
 	static ws2811_led_t dotcolors[] = {
@@ -186,11 +116,71 @@ void matrix_bottom(display_t* display) {
 		if (dotspos[i] > (width - 1))	dotspos[i] = 0;
 
 		if (display->channel[0].strip_type == SK6812_STRIP_RGBW)
-			//display[dotspos[i] + (height - 1) * width] = dotcolors_rgbw[i];
 			pixel_SetColor(display, dotcolors_rgbw + i, dotspos[i] + (height - 1) * width);
 		else
-			//display[dotspos[i] + (height - 1) * width] = dotcolors[i];
 			pixel_SetColor(display, dotcolors + i, dotspos[i] + (height - 1) * width);
 	}
+}
+
+/**
+ * Main application
+ */
+int main(int argc, char *argv[]) {
+	/* *** Variables *** */
+	ws2811_t ledstring = {
+		.freq = TARGET_FREQ,
+		.dmanum = DMA,
+		.channel = {
+			[0] = {
+				.gpionum = GPIO_PIN,
+				.count = LED_COUNT,
+				.invert = 0,
+				.brightness = 255,
+				.strip_type = STRIP_TYPE,
+			},
+			[1] = {
+				.gpionum = 0,
+				.count = 0,
+				.invert = 0,
+				.brightness = 0,
+			},
+		},
+	};
+	unsigned int fps = 18;
+	displayStatus_t ret;
+	/* ***************** */
+
+	sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+
+	parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
+
+	setup_handlers();
+
+	if ((ret = display_Init(&ledstring)) != WS2811_SUCCESS) {
+		fprintf(stderr, "ws2811_init failed: %s\n", displayStatus_t_ToStr(ret));
+		return ret;
+	}
+
+	while ( running ) {
+		/* Work without intermediate buffer */
+		matrix_raise(&ledstring);
+		matrix_bottom(&ledstring);
+
+		if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS) {
+			fprintf(stderr, "ws2811_render failed: %s\n", displayStatus_t_ToStr(ret));
+			break;
+		}
+		
+		/* Frames Per Seconds */
+		usleep(1000000 / fps);
+	}
+	
+	if (clear_on_exit)	display_Off(&ledstring);
+
+	/* Properly free ressources of a display */
+	display_Terminate(&ledstring);
+	
+	printf ("\n");
+	return ret;
 }
 
