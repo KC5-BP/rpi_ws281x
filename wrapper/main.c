@@ -44,8 +44,9 @@ int width = WIDTH;
 int height = HEIGHT;
 int led_count = LED_COUNT;
 
+uint8_t running = 1;
 int clear_on_exit = 0;
-static uint8_t running = 1;
+unsigned int fps = 18;
 
 // EXTERN CMD MANAGER --------------------------------------------->
 // CTRL C Handler
@@ -53,6 +54,16 @@ static void ctrl_c_handler(int signum)
 {
 	(void)(signum);
     running = 0;
+}
+
+/**
+ * USR1: Fasten fps
+ * USR2: Lower  fps
+ */
+static void sig_usrx(int sig) {
+	if (sig == SIGUSR1)		fps += 1;
+	else if (sig == SIGUSR2)	fps -= 1;
+	printf("SIGUSRX received, new 'fps' value: %d\n", fps);
 }
 
 static void setup_handlers(void)
@@ -146,9 +157,11 @@ int main(int argc, char *argv[]) {
 			},
 		},
 	};
-	unsigned int fps = 18;
 	displayStatus_t ret;
 	/* ***************** */
+
+	signal(SIGUSR1, sig_usrx);
+	signal(SIGUSR2, sig_usrx);
 
 	sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 
