@@ -67,161 +67,130 @@ static void setup_handlers(void)
 }
 
 // FN PROTOTYPES Based on the default exemple --------------------->
-void matrix_render(ws2811_t* display, ws2811_led_t* colors);
-void matrix_raise(ws2811_led_t* colors);
-void matrix_clear(ws2811_led_t* colors);
-void matrix_bottom(ws2811_t* display, ws2811_led_t* colors);
+//void matrix_render(ws2811_t* display);
+//void matrix_raise(ws2811_led_t* display);
+//void matrix_clear(ws2811_led_t* display);
+//void matrix_bottom(ws2811_led_t* display);
+void matrix_raise(display_t* display);
+void matrix_clear(display_t* display);
+void matrix_bottom(display_t* display);
 
 int main(int argc, char *argv[])
 {
-    ws2811_t ledstring = {
-        .freq = TARGET_FREQ,
-        .dmanum = DMA,
-        .channel = {
-            [0] = {
-                .gpionum = GPIO_PIN,
-                .count = LED_COUNT,
-                .invert = 0,
-                .brightness = 255,
-                .strip_type = STRIP_TYPE,
-            },
-            [1] = {
-                .gpionum = 0,
-                .count = 0,
-                .invert = 0,
-                .brightness = 0,
-            },
-        },
-    };
-    displayStatus_t ret;
+	ws2811_t ledstring = {
+		.freq = TARGET_FREQ,
+		.dmanum = DMA,
+		.channel = {
+			[0] = {
+				.gpionum = GPIO_PIN,
+				.count = LED_COUNT,
+				.invert = 0,
+				.brightness = 255,
+				.strip_type = STRIP_TYPE,
+			},
+			[1] = {
+				.gpionum = 0,
+				.count = 0,
+				.invert = 0,
+				.brightness = 0,
+			},
+		},
+	};
+	displayStatus_t ret;
 
-    sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
+	sprintf(VERSION, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO);
 
-    parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
+	parseargs(argc, argv, &ledstring, &height, &width, &led_count, &clear_on_exit);
 
-    ws2811_led_t* matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
+	ws2811_led_t* matrix = (ws2811_led_t*)malloc(sizeof(ws2811_led_t) * ledstring.channel[0].count);
 
-    setup_handlers();
+	setup_handlers();
 
-    if ((ret = display_Init(&ledstring)) != WS2811_SUCCESS) {
-        fprintf(stderr, "ws2811_init failed: %s\n", displayStatus_t_ToStr(ret));
-        return ret;
-    }
+	if ((ret = display_Init(&ledstring)) != WS2811_SUCCESS) {
+		fprintf(stderr, "ws2811_init failed: %s\n", displayStatus_t_ToStr(ret));
+		return ret;
+	}
 
-    //ledPos_t areaStart[] = {  0,  70};
-    //ledPos_t areaEnd[]   = { 70, 140};
-    ledPos_t areaStart[] = {  0,  ledstring.channel[0].count / 2};
-    ledPos_t areaEnd[]   = { ledstring.channel[0].count / 2, ledstring.channel[0].count};
-    //ledColor_t areaColor[] = {0x00081000, 0x00080010};
-    ledColor_t areaColor[] = {0x00080010, 0x00081000};
+	while ( running ) {
+		matrix_raise(&ledstring);
+		matrix_bottom(&ledstring);
+		//matrix_render(&ledstring);
 
-    for (ledPos_t i = 0; i < ARRAY_SIZE(areaStart); ++i)
-	display_Chain(&ledstring, areaColor+i, areaStart[i], areaEnd[i]);
+		if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS) {
+			fprintf(stderr, "ws2811_render failed: %s\n", displayStatus_t_ToStr(ret));
+			break;
+		}
+		
+		/* / X IPS */
+		usleep(1000000 / 20);
+	}
+	
+	if (clear_on_exit)
+		display_Off(&ledstring);
 
-    if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS)
-            fprintf(stderr, "ws2811_render failed: %s\n", displayStatus_t_ToStr(ret));
-    /*
-    do {
-        matrix_raise(matrix);
-        matrix_bottom(&ledstring, matrix);
-        matrix_render(&ledstring, matrix);
-
-        if ((ret = display_Show(&ledstring)) != WS2811_SUCCESS)
-        {
-            fprintf(stderr, "ws2811_render failed: %s\n", displayStatus_t_ToStr(ret));
-            break;
-        }
-
-        // X frames / sec
-        usleep(1000000 / 9);
-    } while ( running );
-    */
-
-    if (clear_on_exit) {
-        matrix_clear(matrix);
-        matrix_render(&ledstring, matrix);
-        display_Off(&ledstring);
-    }
-
-    display_Terminate(&ledstring);
-
-    printf ("\n");
-    return ret;
+	display_Terminate(&ledstring);
+	
+	printf ("\n");
+	return ret;
 }
 
-
-// FN DECLARATIONS Based on the default exemple ------------------->
-void matrix_render(ws2811_t* display, ws2811_led_t* colors)
+void matrix_raise(display_t* display)
 {
-    int pos = 0;
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {   
-            pos = y * width + x;
-            //pixel_SetColor(display, &colors[pos], pos);
-              pixel_SetColor(display, colors + pos, pos);
-            //display->channel[0].leds[y * width + x] = colors[y * width + x];
-        }
-    }
+	for (int y = 0; y < (height - 1); y++) {
+		for (int x = 0; x < width; x++) {
+			// This is for the 8x8 Pimoroni Unicorn-HAT where the LEDS in subsequent
+			// rows are arranged in opposite directions
+			ws2811_led_t tmp = pixel_GetColor(display, (y + 1) * width + width - (x + 1));
+			pixel_SetColor(display, &tmp, y * width + x);
+			//display[y * width + x] = display[(y + 1) * width + width - (x + 1)];
+
+		}
+	}
 }
-void matrix_raise(ws2811_led_t* colors)
+
+//void matrix_clear(ws2811_led_t* display)
+void matrix_clear(display_t* display)
 {
-    for (int y = 0; y < (height - 1); y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            // This is for the 8x8 Pimoroni Unicorn-HAT where the LEDS in subsequent
-            // rows are arranged in opposite directions
-            colors[y * width + x] = colors[(y + 1)*width + width - x - 1];
-        }
-    }
+	for (int y = 0; y < height; y++)
+		for (int x = 0; x < width; x++)
+			display->channel[0].leds[y * width + x] = 0;
 }
-void matrix_clear(ws2811_led_t* colors)
-{
-    for (int y = 0; y < (height ); y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            colors[y * width + x] = 0;
-        }
-    }
+
+//void matrix_bottom(ws2811_led_t* display) {
+void matrix_bottom(display_t* display) {
+	static int dotspos[] = {0, 1, 2, 3, 4, 5, 6, 7};
+	static ws2811_led_t dotcolors[] = {
+		0x00200000,  // red
+		0x00201000,  // orange
+		0x00202000,  // yellow
+		0x00002000,  // green
+		0x00002020,  // lightblue
+		0x00000020,  // blue
+		0x00100010,  // purple
+		0x00200010,  // pink
+	};
+
+	static ws2811_led_t dotcolors_rgbw[] = {
+		0x00200000,  // red
+		0x10200000,  // red + W
+		0x00002000,  // green
+		0x10002000,  // green + W
+		0x00000020,  // blue
+		0x10000020,  // blue + W
+		0x00101010,  // white
+		0x10101010,  // white + W
+	};
+	
+	for (int i = 0; i < (int)(ARRAY_SIZE(dotspos)); i++) {
+		dotspos[i]++;
+		if (dotspos[i] > (width - 1))	dotspos[i] = 0;
+
+		if (display->channel[0].strip_type == SK6812_STRIP_RGBW)
+			//display[dotspos[i] + (height - 1) * width] = dotcolors_rgbw[i];
+			pixel_SetColor(display, dotcolors_rgbw + i, dotspos[i] + (height - 1) * width);
+		else
+			//display[dotspos[i] + (height - 1) * width] = dotcolors[i];
+			pixel_SetColor(display, dotcolors + i, dotspos[i] + (height - 1) * width);
+	}
 }
-void matrix_bottom(ws2811_t* display, ws2811_led_t* colors) {
-    int dotspos[] = {0,1,2,3,4,5,6,7};
-    ws2811_led_t dotcolors[] =
-    {
-        0x00200000,  // red
-        0x00201000,  // orange
-        0x00202000,  // yellow
-        0x00002000,  // green
-        0x00002020,  // lightblue
-        0x00000020,  // blue
-        0x00100010,  // purple
-        0x00200010,  // pink
-    };
 
-    ws2811_led_t dotcolors_rgbw[] =
-    {
-        0x00200000,  // red
-        0x10200000,  // red + W
-        0x00002000,  // green
-        0x10002000,  // green + W
-        0x00000020,  // blue
-        0x10000020,  // blue + W
-        0x00101010,  // white
-        0x10101010,  // white + W
-    };
-
-    for (int i = 0; i < (int)(ARRAY_SIZE(dotspos)); i++)
-    {
-        //dotspos[i]++;
-        if (++dotspos[i] > (width - 1))
-            dotspos[i] = 0;
-
-        if (display->channel[0].strip_type == SK6812_STRIP_RGBW)
-            colors[dotspos[i] + (height - 1) * width] = dotcolors_rgbw[i];
-        else
-            colors[dotspos[i] + (height - 1) * width] = dotcolors[i];
-    }
-}
