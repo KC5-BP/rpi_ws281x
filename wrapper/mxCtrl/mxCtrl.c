@@ -101,6 +101,11 @@ void matrix_SetTextPosition(unsigned char column, unsigned char line) {
 	txtOffset.column = column;
 	txtOffset.line = line;
 }
+
+offsetText matrix_GetCursorPos() {
+	return txtOffset;
+}
+
 //======================================================================================>
 void matrix_Print(display_t* display, ledColor_t* newColor, const char* _CharToWrite) {
 	unsigned int _x, _y;

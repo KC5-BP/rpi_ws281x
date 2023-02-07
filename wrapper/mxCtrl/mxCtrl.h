@@ -48,6 +48,8 @@ extern ledPos_t pixel_RecoverPosition(unsigned char posX, unsigned char posY);
 /* Description  :   Set position where to start displaying text.					   */
 extern void matrix_SetTextPosition(unsigned char column, unsigned char line);
 //======================================================================================>
+extern offsetText matrix_GetCursorPos();
+//======================================================================================>
 /* Description  :   Filling status of addressMatrix to display text.				   */
 extern void matrix_Print(display_t* display, ledColor_t* newColor, \
 					const char* _CharToWrite/*, ...*/);
